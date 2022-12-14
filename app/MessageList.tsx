@@ -41,10 +41,14 @@ function MessageList({initialMessages}: Props) {
         }
     }, [messages, mutate, clientPusher]);
 
-    const bottomRef = useRef(null);
+    const bottomRef = useRef<null | HTMLDivElement>(null);
     useEffect(() => {
         // 👇️ scroll to bottom every time messages change
-        bottomRef.current?.scrollIntoView({behavior: 'smooth'});
+        if (bottomRef.current === null) {}
+        else {
+            bottomRef.current.scrollIntoView({behavior: 'smooth'});
+        }
+            
       }, [messages]);
 
     return (
