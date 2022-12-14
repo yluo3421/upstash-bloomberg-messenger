@@ -6,19 +6,20 @@ import { v4 as uuid } from "uuid";
 import { Message } from "../typings";
 import fetcher from "../utils/fetchMessages";
 import { unstable_getServerSession } from 'next-auth';
+import { useSession } from "next-auth/react";
 
 type Props = {
     session: Awaited<ReturnType<typeof unstable_getServerSession>>;
 }
 
-function ChatInput({session}: Props) {
+function ChatInput() {
     const [input, setInput] = useState("");
     const { data: messages, error, mutate } = useSWR("/api/getMessages", fetcher);
-
+    const { data: session } = useSession();
 
     const addMessage = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!input || !session) return;
+        if (!input || !session) {return};
 
         const messageToSend = input;
 
